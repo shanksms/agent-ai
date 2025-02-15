@@ -8,8 +8,9 @@ from llama_index.llms.openai import OpenAI
 
 from prompts import new_prompt, instruction_str, context
 from note import note_engine
+from pdf import canada_engine
 
-load_dotenv()
+#load_dotenv()
 population_path = os.path.join('data', 'world_population.csv')
 population_df = pd.read_csv(population_path)
 #print(population_df.head())
@@ -24,7 +25,14 @@ tools = [
             name="population_data",
             description="this gives information at the world population and demographics",
         ),
-    )
+    ),
+    QueryEngineTool(
+            query_engine=canada_engine,
+            metadata=ToolMetadata(
+                name="canada_data",
+                description="this gives detailed information about canada the country",
+            ),
+        )
 ]
 
 llm = OpenAI(model="gpt-3.5-turbo-16k")
